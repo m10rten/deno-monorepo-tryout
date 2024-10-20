@@ -5,3 +5,35 @@ services:
       context: .
     ports:
       - 8000:8000
+
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    hostname: mongo
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+    entrypoint: ["/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0"]
+
+  mongo-setup:
+    container_name: mongo_setup
+    image: mongo:latest
+    depends_on:
+      - mongo
+    volumes:
+      - ./scripts:/scripts
+    restart: "no"
+    entrypoint: ["bash", "/scripts/mongo_setup.sh"]
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    hostname: postgres
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+
+volumes:
+  mongo_data: {}
