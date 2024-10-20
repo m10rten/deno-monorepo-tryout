@@ -1,0 +1,11 @@
+{
+  "tasks": {
+    "dev:server": "cd apps/server && deno task dev",
+    "dev": "deno task dev:server"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  },
+  "workspace": ["./packages/calculator", "./apps/server"],
+  "license": "MIT"
+}
